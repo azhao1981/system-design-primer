@@ -5,35 +5,35 @@
   <br/>
 </p>
 
-## Motivation
+## Motivation(动机)
 
-> Learn how to design large scale systems.
+> Learn how to design large scale(可伸缩) systems.
 >
 > Prep for the system design interview.
 
 ### Learn how to design large scale systems
 
-Learning how to design scalable systems will help you become a better engineer.
+Learning how to design scalable(可伸缩) systems will help you become a better engineer.
 
-System design is a broad topic.  There is a **vast amount of resources scattered throughout the web** on system design principles.
+System design is a broad topic.  There is a **vast(大量) amount of resources scattered(分散) throughout(吞吐) the web** on system design principles.
 
 This repo is an **organized collection** of resources to help you learn how to build systems at scale.
 
 ### Learn from the open source community
 
-This is an early draft of a continually updated, open source project.
+This is an early draft(草稿) of a continually updated(不断更新), open source project.
 
 [Contributions](#contributing) are welcome!
 
 ### Prep for the system design interview
 
-In addition to coding interviews, system design is a **required component** of the **technical interview process** at many tech companies.
+In addition to coding interviews, system design is a **required component(必需组成部分)** of the **technical interview process** at many tech companies.
 
-**Practice common system design interview questions** and **compare** your results with **sample solutions**: discussions, code, and diagrams.
+**Practice common system design interview questions** and **compare** your results(成绩) with **sample solutions**: discussions, code, and diagrams(图表).
 
 Additional topics for interview prep:
 
-* [Study guide](#study-guide)
+* [Study guide(学习手册)](#study-guide)
 * [How to approach a system design interview question](#how-to-approach-a-system-design-interview-question)
 * [System design interview questions, **with solutions**](#system-design-interview-questions-with-solutions)
 * [Object-oriented design interview questions, **with solutions**](#object-oriented-design-interview-questions-with-solutions)
@@ -46,7 +46,7 @@ Additional topics for interview prep:
   <br/>
 </p>
 
-The provided [Anki flashcard decks](https://apps.ankiweb.net/) use spaced repetition to help you retain key system design concepts.
+The provided(由..提供) [Anki flashcard decks](https://apps.ankiweb.net/) use spaced repetition(空闲背记) to help you retain(记住) key system design concepts.
 
 * [System design deck](https://github.com/donnemartin/system-design-primer/blob/master/resources/flash_cards/System%20Design.apkg)
 * [System design exercises deck](https://github.com/donnemartin/system-design-primer/blob/master/resources/flash_cards/System%20Design%20Exercises.apkg)
@@ -58,7 +58,7 @@ Great for use while on-the-go.
 
 > Learn from the community.
 
-Feel free to submit pull requests to help:
+Feel(试) free to submit pull requests to help:
 
 * Fix errors
 * Improve sections
@@ -70,7 +70,7 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
 
 ## Index of system design topics
 
-> Summaries of various system design topics, including pros and cons.  **Everything is a trade-off**.
+> Summaries of various(多个) system design topics, including pros(正面) and cons(缺点).  **Everything is a trade-off(权衡)**.
 >
 > Each section contains links to more in-depth resources.
 
