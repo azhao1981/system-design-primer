@@ -84,28 +84,28 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
     * [Step 2: Review the scalability article](#step-2-review-the-scalability-article)
     * [Next steps](#next-steps)
 * [Performance vs scalability](#performance-vs-scalability)
-* [Latency vs throughput](#latency-vs-throughput)
-* [Availability vs consistency](#availability-vs-consistency)
+* [Latency(延迟) vs throughput](#latency-vs-throughput)
+* [Availability(可用性) vs consistency(一致性)](#availability-vs-consistency)
     * [CAP theorem](#cap-theorem)
-        * [CP - consistency and partition tolerance](#cp---consistency-and-partition-tolerance)
+        * [CP - consistency and partition tolerance(分区容忍性)](#cp---consistency-and-partition-tolerance)
         * [AP - availability and partition tolerance](#ap---availability-and-partition-tolerance)
-* [Consistency patterns](#consistency-patterns)
+* [Consistency(一致性) patterns](#consistency-patterns)
     * [Weak consistency](#weak-consistency)
-    * [Eventual consistency](#eventual-consistency)
+    * [Eventual(结果) consistency](#eventual-consistency)
     * [Strong consistency](#strong-consistency)
 * [Availability patterns](#availability-patterns)
     * [Fail-over](#fail-over)
-    * [Replication](#replication)
+    * [Replication(备份)](#replication)
 * [Domain name system](#domain-name-system)
 * [Content delivery network](#content-delivery-network)
     * [Push CDNs](#push-cdns)
     * [Pull CDNs](#pull-cdns)
 * [Load balancer](#load-balancer)
-    * [Active-passive](#active-passive)
+    * [Active-passive(被动)](#active-passive)
     * [Active-active](#active-active)
     * [Layer 4 load balancing](#layer-4-load-balancing)
     * [Layer 7 load balancing](#layer-7-load-balancing)
-    * [Horizontal scaling](#horizontal-scaling)
+    * [Horizontal scaling(水平扩展)](#horizontal-scaling)
 * [Reverse proxy (web server)](#reverse-proxy-web-server)
     * [Load balancer vs reverse proxy](#load-balancer-vs-reverse-proxy)
 * [Application layer](#application-layer)
@@ -115,10 +115,10 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
     * [Relational database management system (RDBMS)](#relational-database-management-system-rdbms)
         * [Master-slave replication](#master-slave-replication)
         * [Master-master replication](#master-master-replication)
-        * [Federation](#federation)
-        * [Sharding](#sharding)
-        * [Denormalization](#denormalization)
-        * [SQL tuning](#sql-tuning)
+        * [Federation(联合)](#federation)
+        * [Sharding(分片)](#sharding)
+        * [Denormalization(反范式)](#denormalization)
+        * [SQL tuning(微调)](#sql-tuning)
     * [NoSQL](#nosql)
         * [Key-value store](#key-value-store)
         * [Document store](#document-store)
@@ -138,7 +138,7 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
         * [Write-through](#write-through)
         * [Write-behind (write-back)](#write-behind-write-back)
         * [Refresh-ahead](#refresh-ahead)
-* [Asynchronism](#asynchronism)
+* [Asynchronism(异步)](#asynchronism)
     * [Message queues](#message-queues)
     * [Task queues](#task-queues)
     * [Back pressure](#back-pressure)
@@ -146,9 +146,9 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
     * [Transmission control protocol (TCP)](#transmission-control-protocol-tcp)
     * [User datagram protocol (UDP)](#user-datagram-protocol-udp)
     * [Remote procedure call (RPC)](#remote-procedure-call-rpc)
-    * [Representational state transfer (REST)](#representational-state-transfer-rest)
+    * [Representational(抽像) state transfer (REST)](#representational-state-transfer-rest)
 * [Security](#security)
-* [Appendix](#appendix)
+* [Appendix(附录)](#appendix)
     * [Powers of two table](#powers-of-two-table)
     * [Latency numbers every programmer should know](#latency-numbers-every-programmer-should-know)
     * [Additional system design interview questions](#additional-system-design-interview-questions)
@@ -178,11 +178,11 @@ What you are asked in an interview depends on variables such as:
 * Which companies you are interviewing with
 * Luck
 
-More experienced candidates are generally expected to know more about system design.  Architects or team leads might be expected to know more than individual contributors.  Top tech companies are likely to have one or more design interview rounds.
+More experienced candidates are generally expected to know more about system design.  Architects or team leads might be expected to know more than individual(个别) contributors.  Top tech companies are likely to have one or more design interview rounds.
 
 Start broad and go deeper in a few areas.  It helps to know a little about various key system design topics.  Adjust the following guide based on your timeline, experience, what positions you are interviewing for, and which companies you are interviewing with.
 
-* **Short timeline** - Aim for **breadth** with system design topics.  Practice by solving **some** interview questions.
+* **Short timeline** - Aim for(以..为目标) **breadth** with system design topics.  Practice by solving **some** interview questions.
 * **Medium timeline** - Aim for **breadth** and **some depth** with system design topics.  Practice by solving **many** interview questions.
 * **Long timeline** - Aim for **breadth** and **more depth** with system design topics.  Practice by solving **most** interview questions.
 
@@ -198,13 +198,13 @@ Start broad and go deeper in a few areas.  It helps to know a little about vario
 
 ## How to approach a system design interview question
 
-> How to tackle a system design interview question.
+> How to tackle(装备) a system design interview question.
 
 The system design interview is an **open-ended conversation**.  You are expected to lead it.
 
-You can use the following steps to guide the discussion.  To help solidify this process, work through the [System design interview questions with solutions](#system-design-interview-questions-with-solutions) section using the following steps.
+You can use the following steps to guide the discussion.  To help solidify(固化) this process, work through the [System design interview questions with solutions](#system-design-interview-questions-with-solutions) section using the following steps.
 
-### Step 1: Outline use cases, constraints, and assumptions
+### Step 1: Outline(概述) use cases, constraints(约束), and assumptions
 
 Gather requirements and scope the problem.  Ask questions to clarify use cases and constraints.  Discuss assumptions.
 
@@ -215,42 +215,42 @@ Gather requirements and scope the problem.  Ask questions to clarify use cases a
 * What are the inputs and outputs of the system?
 * How much data do we expect to handle?
 * How many requests per second do we expect?
-* What is the expected read to write ratio?
+* What is the expected read to write ratio(比例)?
 
 ### Step 2: Create a high level design
 
 Outline a high level design with all important components.
 
-* Sketch the main components and connections
-* Justify your ideas
+* Sketch(素描) the main components and connections
+* Justify(证明合法) your ideas
 
 ### Step 3: Design core components
 
-Dive into details for each core component.  For example, if you were asked to [design a url shortening service](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md), discuss:
+Dive into(专研) details for each core component.  For example, if you were asked to [design a url shortening service](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md), discuss:
 
 * Generating and storing a hash of the full url
     * [MD5](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md) and [Base62](https://github.com/donnemartin/system-design-primer/blob/master/solutions/system_design/pastebin/README.md)
-    * Hash collisions
+    * Hash collisions(碰撞)
     * SQL or NoSQL
     * Database schema
 * Translating a hashed url to the full url
-    * Database lookup
+    * Database lookup(查找)
 * API and object-oriented design
 
 ### Step 4: Scale the design
 
-Identify and address bottlenecks, given the constraints.  For example, do you need the following to address scalability issues?
+Identify and address bottlenecks(瓶颈), given the constraints.  For example, do you need the following to address scalability issues?
 
 * Load balancer
 * Horizontal scaling
 * Caching
 * Database sharding
 
-Discuss potential solutions and trade-offs.  Everything is a trade-off.  Address bottlenecks using [principles of scalable system design](#index-of-system-design-topics).
+Discuss potential(潜在的) solutions and trade-offs(权衡).  Everything is a trade-off.  Address bottlenecks using [principles of scalable system design](#index-of-system-design-topics).
 
-### Back-of-the-envelope calculations
+### Back-of-the-envelope(信封) calculations(运算)
 
-You might be asked to do some estimates by hand.  Refer to the [Appendix](#appendix) for the following resources:
+You might be asked to do some estimates(预算) by hand.  Refer to the [Appendix](#appendix) for the following resources:
 
 * [Use back of the envelope calculations](http://highscalability.com/blog/2011/1/26/google-pro-tip-use-back-of-the-envelope-calculations-to-choo.html)
 * [Powers of two table](#powers-of-two-table)
@@ -360,8 +360,8 @@ First, you'll need a basic understanding of common principles, learning about wh
 [Scalability Lecture at Harvard](https://www.youtube.com/watch?v=-W9F__D3oY4)
 
 * Topics covered:
-    * Vertical scaling
-    * Horizontal scaling
+    * Vertical(垂直) scaling
+    * Horizontal(水平) scaling
     * Caching
     * Load balancing
     * Database replication
@@ -391,7 +391,7 @@ Then we'll dive into more specific topics such as DNS, CDNs, and load balancers.
 
 ## Performance vs scalability
 
-A service is **scalable** if it results in increased **performance** in a manner proportional to resources added. Generally, increasing performance means serving more units of work, but it can also be to handle larger units of work, such as when datasets grow.<sup><a href=http://www.allthingsdistributed.com/2006/03/a_word_on_scalability.html>1</a></sup>
+A service is **scalable(扩展性)** if it results(终归) in increased **performance** in a manner(方式) proportional(均衡的) to resources added. Generally, increasing performance means serving more units of work, but it can also be to handle larger units of work, such as when datasets grow.<sup><a href=http://www.allthingsdistributed.com/2006/03/a_word_on_scalability.html>1</a></sup>
 
 Another way to look at performance vs scalability:
 
@@ -409,7 +409,7 @@ Another way to look at performance vs scalability:
 
 **Throughput** is the number of such actions or results per unit of time.
 
-Generally, you should aim for **maximal throughput** with **acceptable latency**.
+Generally, you should aim for **maximal throughput(最大的吞吐量)** with **acceptable latency(可接受的延迟)**.
 
 ### Source(s) and further reading
 
@@ -422,52 +422,54 @@ Generally, you should aim for **maximal throughput** with **acceptable latency**
 <p align="center">
   <img src="http://i.imgur.com/bgLMI2u.png">
   <br/>
-  <i><a href=http://robertgreiner.com/2014/08/cap-theorem-revisited>Source: CAP theorem revisited</a></i>
+  <i><a href=http://robertgreiner.com/2014/08/cap-theorem-revisited>Source: CAP theorem revisited(再访)</a></i>
+  <i><a href=https://zh.wikipedia.org/zh-hans/CAP%E5%AE%9A%E7%90%86>Source: CAP定理</a></i>
 </p>
 
-In a distributed computer system, you can only support two of the following guarantees:
+In a distributed computer system, you can only support two of the following guarantees(保证):
 
-* **Consistency** - Every read receives the most recent write or an error
-* **Availability** - Every request receives a response, without guarantee that it contains the most recent version of the information
-* **Partition Tolerance** - The system continues to operate despite arbitrary partitioning due to network failures
+* **Consistency(一致性)** - Every read receives the most recent write or an error
+* **Availability(可用性)** - Every request receives a response, without guarantee that it contains the most recent version of the information
+* **Partition Tolerance(分区容错性)** - The system continues to operate despite(尽管) arbitrary(任意的) partitioning due to network failures
 
-*Networks aren't reliable, so you'll need to support partition tolerance.  You'll need to make a software tradeoff between consistency and availability.*
+*Networks aren't reliable(可靠的), so you'll need to support partition tolerance.  You'll need to make a software tradeoff between consistency and availability.*
 
 #### CP - consistency and partition tolerance
 
 Waiting for a response from the partitioned node might result in a timeout error.  CP is a good choice if your business needs require atomic reads and writes.
+该特征表明在工作过程中如果有任意的消息丢失，系统是否能够继续工作
 
 #### AP - availability and partition tolerance
 
-Responses return the most recent version of the data, which might not be the latest.  Writes might take some time to propagate when the partition is resolved.
+Responses return the most recent version of the data, which might not be the latest.  Writes might take some time to propagate(传递) when the partition is resolved.
 
-AP is a good choice if the business needs allow for [eventual consistency](#eventual-consistency) or when the system needs to continue working despite external errors.
+AP is a good choice if the business needs allow for [eventual consistency(最终一致)](#eventual-consistency) or when the system needs to continue working despite(不管) external(外部的) errors.
 
 ### Source(s) and further reading
 
-* [CAP theorem revisited](http://robertgreiner.com/2014/08/cap-theorem-revisited/)
-* [A plain english introduction to CAP theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem/)
+* [CAP theorem revisited(改进)](http://robertgreiner.com/2014/08/cap-theorem-revisited/)
+* [A plain english(简话) introduction to CAP theorem](http://ksat.me/a-plain-english-introduction-to-cap-theorem/)
 * [CAP FAQ](https://github.com/henryr/cap-faq)
 
 ## Consistency patterns
 
-With multiple copies of the same data, we are faced with options on how to synchronize them so clients have a consistent view of the data.  Recall the definition of consistency from the [CAP theorem](#cap-theorem) - Every read receives the most recent write or an error.
+With multiple copies of the same data, we are faced with options on how to synchronize(同步) them so clients have a consistent view of the data.  Recall(回想) the definition of consistency from the [CAP theorem](#cap-theorem) - Every read receives the most recent write or an error.
 
 ### Weak consistency
 
-After a write, reads may or may not see it.  A best effort approach is taken.
+After a write, reads may or may not see it.  A best effort approach(最有效方法) is taken.
 
-This approach is seen in systems such as memcached.  Weak consistency works well in real time use cases such as VoIP, video chat, and realtime multiplayer games.  For example, if you are on a phone call and lose reception for a few seconds, when you regain connection you do not hear what was spoken during connection loss.
+This approach is seen in systems such as memcached.  Weak consistency works well in real time use cases such as VoIP, video chat, and realtime multiplayer games.  For example, if you are on a phone call and lose reception(接收) for a few seconds, when you regain(恢复) connection you do not hear what was spoken during connection loss.
 
 ### Eventual consistency
 
-After a write, reads will eventually see it (typically within milliseconds).  Data is replicated asynchronously.
+After a write, reads will eventually see it (typically(通常) within milliseconds).  Data is replicated asynchronously(异步复制).
 
 This approach is seen in systems such as DNS and email.  Eventual consistency works well in highly available systems.
 
 ### Strong consistency
 
-After a write, reads will see it.  Data is replicated synchronously.
+After a write, reads will see it.  Data is replicated synchronously(同步复制).
 
 This approach is seen in file systems and RDBMSes.  Strong consistency works well in systems that need transactions.
 
@@ -479,28 +481,28 @@ This approach is seen in file systems and RDBMSes.  Strong consistency works wel
 
 There are two main patterns to support high availability: **fail-over** and **replication**.
 
-### Fail-over
+### Fail-over([故障转移](https://zh.wikipedia.org/zh-hans/%E6%95%85%E9%9A%9C%E8%BD%AC%E7%A7%BB))
 
-#### Active-passive
+#### Active-passive(主被模式)
 
 With active-passive fail-over, heartbeats are sent between the active and the passive server on standby.  If the heartbeat is interrupted, the passive server takes over the active's IP address and resumes service.
 
-The length of downtime is determined by whether the passive server is already running in 'hot' standby or whether it needs to start up from 'cold' standby.  Only the active server handles traffic.
+The length of downtime is determined by whether the passive server is already running in 'hot' standby(热备) or whether it needs to start up from 'cold' standby(冷备).  Only the active server handles traffic.
 
 Active-passive failover can also be referred to as master-slave failover.
 
-#### Active-active
+#### Active-active(双主模式)
 
-In active-active, both servers are managing traffic, spreading the load between them.
+In active-active, both servers are managing traffic, spreading(摊分) the load between them.
 
-If the servers are public-facing, the DNS would need to know about the public IPs of both servers.  If the servers are internal-facing, application logic would need to know about both servers.
+If the servers are public-facing(面向公众), the DNS would need to know about the public IPs of both servers.  If the servers are internal-facing, application logic would need to know about both servers.
 
 Active-active failover can also be referred to as master-master failover.
 
 ### Disadvantage(s): failover
 
 * Fail-over adds more hardware and additional complexity.
-* There is a potential for loss of data if the active system fails before any newly written data can be replicated to the passive.
+* There is a potential(潜在) for loss of data if the active system fails before any newly written data can be replicated to the passive.
 
 ### Replication
 
@@ -516,12 +518,12 @@ This topic is further discussed in the [Database](#database) section:
 <p align="center">
   <img src="http://i.imgur.com/IOyLj4i.jpg">
   <br/>
-  <i><a href=http://www.slideshare.net/srikrupa5/dns-security-presentation-issa>Source: DNS security presentation</a></i>
+  <i><a href=http://www.slideshare.net/srikrupa5/dns-security-presentation-issa>Source: DNS security presentation(介绍)</a></i>
 </p>
 
 A Domain Name System (DNS) translates a domain name such as www.example.com to an IP address.
 
-DNS is hierarchical, with a few authoritative servers at the top level.  Your router or ISP provides information about which DNS server(s) to contact when doing a lookup.  Lower level DNS servers cache mappings, which could become stale due to DNS propagation delays.  DNS results can also be cached by your browser or OS for a certain period of time, determined by the [time to live (TTL)](https://en.wikipedia.org/wiki/Time_to_live).
+DNS is hierarchical(分层), with a few authoritative servers at the top level.  Your router or ISP provides information about which DNS server(s) to contact when doing a lookup.  Lower level DNS servers cache mappings, which could become stale due to DNS propagation(传播) delays.  DNS results can also be cached by your browser or OS for a certain period of time, determined by the [time to live (TTL)](https://en.wikipedia.org/wiki/Time_to_live).
 
 * **NS record (name server)** - Specifies the DNS servers for your domain/subdomain.
 * **MX record (mail exchange)** - Specifies the mail servers for accepting messages.
@@ -539,7 +541,7 @@ Services such as [CloudFlare](https://www.cloudflare.com/dns/) and [Route 53](ht
 
 ### Disadvantage(s): DNS
 
-* Accessing a DNS server introduces a slight delay, although mitigated by caching described above.
+* Accessing a DNS server introduces a slight(少量) delay, although mitigated(减轻) by caching described above.
 * DNS server management could be complex, although they are generally managed by [governments, ISPs, and large companies](http://superuser.com/questions/472695/who-controls-the-dns-servers/472729).
 * DNS services have recently come under [DDoS attack](http://dyn.com/blog/dyn-analysis-summary-of-friday-october-21-attack/), preventing users from accessing websites such as Twitter without knowing Twitter's IP address(es).
 
@@ -559,7 +561,7 @@ Services such as [CloudFlare](https://www.cloudflare.com/dns/) and [Route 53](ht
 
 A content delivery network (CDN) is a globally distributed network of proxy servers, serving content from locations closer to the user.  Generally, static files such as HTML/CSS/JSS, photos, and videos are served from CDN, although some CDNs such as Amazon's CloudFront support dynamic content.  The site's DNS resolution will tell clients which server to contact.
 
-Serving content from CDNs can significantly improve performance in two ways:
+Serving content from CDNs can significantly( 显著地) improve performance in two ways:
 
 * Users receive content at data centers close to them
 * Your servers do not have to serve requests that the CDN fulfills
@@ -568,11 +570,11 @@ Serving content from CDNs can significantly improve performance in two ways:
 
 Push CDNs receive new content whenever changes occur on your server.  You take full responsibility for providing content, uploading directly to the CDN and rewriting URLs to point to the CDN.  You can configure when content expires and when it is updated.  Content is uploaded only when it is new or changed, minimizing traffic, but maximizing storage.
 
-Sites with a small amount of traffic or sites with content that isn't often updated work well with push CDNs.  Content is placed on the CDNs once, instead of being re-pulled at regular intervals.
+Sites with a small amount of traffic or sites with content that isn't often updated work well with push CDNs.  Content is placed on the CDNs once, instead of being re-pulled at regular intervals(间隔).
 
 ### Pull CDNs
 
-Pull CDNs grab new content from your server when the first user requests the content.  You leave the content on your server and rewrite URLs to point to the CDN.  This results in a slower request until the content is cached on the server.
+Pull CDNs grab(攫取) new content from your server when the first user requests the content.  You leave the content on your server and rewrite URLs to point to the CDN.  This results in a slower request until the content is cached on the server.
 
 A [time-to-live (TTL)](https://en.wikipedia.org/wiki/Time_to_live) determines how long content is cached.  Pull CDNs minimize storage space on the CDN, but can create redundant traffic if files expire and are pulled before they have actually changed.
 
@@ -600,9 +602,9 @@ Sites with heavy traffic work well with pull CDNs, as traffic is spread out more
 
 Load balancers distribute incoming client requests to computing resources such as application servers and databases.  In each case, the load balancer returns the response from the computing resource to the appropriate client.  Load balancers are effective at:
 
-* Preventing requests from going to unhealthy servers
+* Preventing(防止的) requests from going to unhealthy servers
 * Preventing overloading resources
-* Helping eliminate single points of failure
+* Helping eliminate(消除) single points of failure
 
 Load balancers can be implemented with hardware (expensive) or with software such as HAProxy.
 
@@ -619,35 +621,36 @@ Load balancers can route traffic based on various metrics, including:
 * Random
 * Least loaded
 * Session/cookies
-* [Round robin or weighted round robin](http://g33kinfo.com/info/archives/2657)
+* [Round robin(循环法) or weighted round robin(加权循环法)](http://g33kinfo.com/info/archives/2657)
+  + [baidu](http://wenku.baidu.com/view/31dcdc19b7360b4c2e3f642a)
 * [Layer 4](#layer-4-load-balancing)
 * [Layer 7](#layer-7-load-balancing)
 
 ### Layer 4 load balancing
 
-Layer 4 load balancers look at info at the [transport layer](#communication) to decide how to distribute requests.  Generally, this involves the source, destination IP addresses, and ports in the header, but not the contents of the packet.  Layer 4 load balancers forward network packets to and from the upstream server, performing [Network Address Translation (NAT)](https://www.nginx.com/resources/glossary/layer-4-load-balancing/).
+Layer 4 load balancers look at info at the [transport layer](#communication) to decide how to distribute requests.  Generally, this involves(牵涉) the source, destination IP addresses, and ports in the header, but not the contents of the packet.  Layer 4 load balancers forward network packets to and from the upstream server, performing [Network Address Translation (NAT)](https://www.nginx.com/resources/glossary/layer-4-load-balancing/).
 
 ### layer 7 load balancing
 
 Layer 7 load balancers look at the [application layer](#communication) to decide how to distribute requests.  This can involve contents of the header, message, and cookies.  Layer 7 load balancers terminates network traffic, reads the message, makes a load-balancing decision, then opens a connection to the selected server.  For example, a layer 7 load balancer can direct video traffic to servers that host videos while directing more sensitive user billing traffic to security-hardened servers.
 
-At the cost of flexibility, layer 4 load balancing requires less time and computing resources than Layer 7, although the performance impact can be minimal on modern commodity hardware.
+At the cost of flexibility, layer 4 load balancing requires less time and computing resources than Layer 7, although the performance impact(效果) can be minimal on modern commodity hardware(商用硬件).
 
-### Horizontal scaling
+### Horizontal(水平) scaling
 
-Load balancers can also help with horizontal scaling, improving performance and availability.  Scaling out using commodity machines is more cost efficient and results in higher availability than scaling up a single server on more expensive hardware, called **Vertical Scaling**.  It is also easier to hire for talent working on commodity hardware than it is for specialized enterprise systems.
+Load balancers can also help with horizontal scaling, improving performance and availability.  Scaling out(横向扩展) using commodity machines is more cost efficient(有效率) and results in higher availability than scaling up a single server on more expensive hardware, called **Vertical(垂直) Scaling**.  It is also easier to hire for talent(人才) working on commodity hardware than it is for specialized(专门) enterprise systems.
 
 #### Disadvantage(s): horizontal scaling
 
 * Scaling horizontally introduces complexity and involves cloning servers
     * Servers should be stateless: they should not contain any user-related data like sessions or profile pictures
-    * Sessions can be stored in a centralized data store such as a [database](#database) (SQL, NoSQL) or a persistent [cache](#cache) (Redis, Memcached)
-* Downstream servers such as caches and databases need to handle more simultaneous connections as upstream servers scale out
+    * Sessions can be stored in a centralized(集中) data store such as a [database](#database) (SQL, NoSQL) or a persistent(执久) [cache](#cache) (Redis, Memcached)
+* Downstream(下游) servers such as caches and databases need to handle more simultaneous(同时发生) connections as upstream servers scale out
 
 ### Disadvantage(s): load balancer
 
 * The load balancer can become a performance bottleneck if it does not have enough resources or if it is not configured properly.
-* Introducing a load balancer to help eliminate single points of failure results in increased complexity.
+* Introducing(引入) a load balancer to help eliminate(消除) single points of failure results in increased complexity.
 * A single load balancer is a single point of failure, configuring multiple load balancers further increases complexity.
 
 ### Source(s) and further reading
