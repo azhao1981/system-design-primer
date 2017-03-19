@@ -138,7 +138,7 @@ Review the [Contributing Guidelines](https://github.com/donnemartin/system-desig
         * [Write-through](#write-through)
         * [Write-behind (write-back)](#write-behind-write-back)
         * [Refresh-ahead](#refresh-ahead)
-* [Asynchronism(异步)](#asynchronism)
+* [Asynchronism)](#asynchronism)(异步
     * [Message queues](#message-queues)
     * [Task queues](#task-queues)
     * [Back pressure](#back-pressure)
@@ -672,12 +672,12 @@ Load balancers can also help with horizontal scaling, improving performance and 
   <br/>
 </p>
 
-A reverse proxy is a web server that centralizes internal services and provides unified interfaces to the public.  Requests from clients are forwarded to a server that can fulfill it before the reverse proxy returns the server's response to the client.
+A reverse proxy is a web server that centralizes internal services and provides unified(统一) interfaces to the public.  Requests from clients are forwarded to a server that can fulfill(满足) it before the reverse proxy returns the server's response to the client.
 
 Additional benefits include:
 
 * **Increased security** - Hide information about backend servers, blacklist IPs, limit number of connections per client
-* **Increased scalability and flexibility** - Clients only see the reverse proxy's IP, allowing you to scale servers or change their configuration
+* **Increased scalability(可扩展性) and flexibility(灵活性)** - Clients only see the reverse proxy's IP, allowing you to scale servers or change their configuration
 * **SSL termination** - Decrypt incoming requests and encrypt server responses so backend servers do not have to perform these potentially expensive operations
     * Removes the need to install [X.509 certificates](https://en.wikipedia.org/wiki/X.509) on each server
 * **Compression** - Compress server responses
@@ -714,9 +714,9 @@ Additional benefits include:
   <i><a href=http://lethain.com/introduction-to-architecting-systems-for-scale/#platform_layer>Source: Intro to architecting systems for scale</a></i>
 </p>
 
-Separating out the web layer from the application layer (also known as platform layer) allows you to scale and configure both layers independently.  Adding a new API results in adding application servers without necessarily adding additional web servers.
+Separating out(分出) the web layer from the application layer (also known as platform layer) allows you to scale and configure both layers independently.  Adding a new API results in(导致) adding application servers without necessarily adding additional web servers.
 
-The **single responsibility principle** advocates for small and autonomous services that work together.  Small teams with small services can plan more aggressively for rapid growth.
+The **single responsibility(职责) principle** advocates(提倡) for small and autonomous(自主) services that work together.  Small teams with small services can plan more aggressively(侵略地) for rapid(迅速) growth.
 
 Workers in the application layer also help enable [asynchronism](#asynchronism).
 
@@ -732,7 +732,7 @@ Systems such as [Zookeeper](http://www.slideshare.net/sauravhaloi/introduction-t
 
 ### Disadvantage(s): application layer
 
-* Adding an application layer with loosely coupled services requires a different approach from an architectural, operations, and process viewpoint (vs a monolithic system).
+* Adding an application layer with loosely(宽松地) coupled services requires a different approach from an architectural(建筑学的), operations, and process viewpoint(视角) (vs a monolithic(完全统一) system).
 * Microservices can add complexity in terms of deployments and operations.
 
 ### Source(s) and further reading
@@ -755,14 +755,14 @@ Systems such as [Zookeeper](http://www.slideshare.net/sauravhaloi/introduction-t
 
 A relational database like SQL is a collection of data items organized in tables.
 
-**ACID** is a set of properties of relational database [transactions](https://en.wikipedia.org/wiki/Database_transaction).
+**ACID** is a set of properties(特质) of relational database [transactions](https://en.wikipedia.org/wiki/Database_transaction).
 
 * **Atomicity** - Each transaction is all or nothing
 * **Consistency** - Any transaction will bring the database from one valid state to another
-* **Isolation** - Executing transactions concurrently has the same results as if the transactions were executed serially
-* **Durability** - Once a transaction has been committed, it will remain so
+* **Isolation** - Executing transactions concurrently(并行) has the same results as if the transactions were executed serially(连续地)
+* **Durability(持久的)** - Once a transaction has been committed, it will remain(保持) so
 
-There are many techniques to scale a relational database: **master-slave replication**, **master-master replication**, **federation**, **sharding**, **denormalization**, and **SQL tuning**.
+There are many techniques to scale a relational database: **master-slave replication**, **master-master replication**, **federation**, **sharding**, **denormalization(反规范化)**, and **SQL tuning**.
 
 #### Master-slave replication
 
@@ -792,16 +792,16 @@ Both masters serve reads and writes and coordinate with each other on writes.  I
 ##### Disadvantage(s): master-master replication
 
 * You'll need a load balancer or you'll need to make changes to your application logic to determine where to write.
-* Most master-master systems are either loosely consistent (violating ACID) or have increased write latency due to synchronization.
-* Conflict resolution comes more into play as more write nodes are added and as latency increases.
+* Most master-master systems are either loosely consistent(一致的) (violating(违背) ACID) or have increased write latency due to synchronization(同步).
+* Conflict resolution comes more into play as more write nodes are added and as latency(潜伏) increases.
 * See [Disadvantage(s): replication](#disadvantages-replication) for points related to **both** master-slave and master-master.
 
 ##### Disadvantage(s): replication
 
 * There is a potential for loss of data if the master fails before any newly written data can be replicated to other nodes.
-* Writes are replayed to the read replicas.  If there are a lot of writes, the read replicas can get bogged down with replaying writes and can't do as many reads.
+* Writes are replayed(重放) to the read replicas.  If there are a lot of writes, the read replicas can get bogged down(停滞) with replaying writes and can't do as many reads.
 * The more read slaves, the more you have to replicate, which leads to greater replication lag.
-* On some systems, writing to the master can spawn multiple threads to write in parallel, whereas read replicas only support writing sequentially with a single thread.
+* On some systems, writing to the master can spawn(大量生产) multiple threads to write in parallel, whereas(反之) read replicas only support writing sequentially with a single thread.
 * Replication adds more hardware and additional complexity.
 
 ##### Source(s) and further reading: replication
@@ -817,7 +817,7 @@ Both masters serve reads and writes and coordinate with each other on writes.  I
   <i><a href=https://www.youtube.com/watch?v=vg5onp8TU6Q>Source: Scaling up to your first 10 million users</a></i>
 </p>
 
-Federation (or functional partitioning) splits up databases by function.  For example, instead of a single, monolithic database, you could have three databases: **forums**, **users**, and **products**, resulting in less read and write traffic to each database and therefore less replication lag.  Smaller databases result in more data that can fit in memory, which in turn results in more cache hits due to improved cache locality.  With no single central master serializing writes you can write in parallel, increasing throughput.
+Federation(联合) (or functional partitioning) splits up databases by function.  For example, instead of a single, monolithic database, you could have three databases: **forums**, **users**, and **products**, resulting in less read and write traffic to each database and therefore less replication lag.  Smaller databases result in more data that can fit in memory, which in turn results in more cache hits due to improved cache locality.  With no single central master serializing writes you can write in parallel, increasing throughput.
 
 ##### Disadvantage(s): federation
 
@@ -847,7 +847,7 @@ Common ways to shard a table of users is either through the user's last name ini
 ##### Disadvantage(s): sharding
 
 * You'll need to update your application logic to work with shards, which could result in complex SQL queries.
-* Data distribution can become lopsided in a shard.  For example, a set of power users on a shard could result in increased load to that shard compared to others.
+* Data distribution can become lopsided(不平衡的) in a shard.  For example, a set of power users on a shard could result in increased load to that shard compared to others.
     * Rebalancing adds additional complexity.  A sharding function based on [consistent hashing](http://www.paperplanes.de/2011/12/9/the-magic-of-consistent-hashing.html) can reduce the amount of transferred data.
 * Joining data from multiple shards is more complex.
 * Sharding adds more hardware and additional complexity.
@@ -860,11 +860,11 @@ Common ways to shard a table of users is either through the user's last name ini
 
 #### Denormalization
 
-Denormalization attempts to improve read performance at the expense of some write performance.  Redundant copies of the data are written in multiple tables to avoid expensive joins.  Some RDBMS such as [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) and Oracle support [materialized views](https://en.wikipedia.org/wiki/Materialized_view) which handle the work of storing redundant information and keeping redundant copies consistent.
+Denormalization(反规范化) attempts to improve read performance at the expense(损失) of some write performance.  Redundant(多余的) copies of the data are written in multiple tables to avoid expensive joins.  Some RDBMS such as [PostgreSQL](https://en.wikipedia.org/wiki/PostgreSQL) and Oracle support [materialized views(实体化视图)](https://en.wikipedia.org/wiki/Materialized_view) which handle the work of storing redundant information and keeping redundant copies consistent.
 
-Once data becomes distributed with techniques such as [federation](#federation) and [sharding](#sharding), managing joins across data centers further increases complexity.  Denormalization might circumvent the need for such complex joins.
+Once data becomes distributed with techniques such as [federation](#federation) and [sharding](#sharding), managing joins across data centers further increases complexity.  Denormalization might circumvent(规避) the need for such complex joins.
 
-In most systems, reads can heavily number writes 100:1 or even 1000:1.  A read resulting in a complex database join can be very expensive, spending a significant amount of time on disk operations.
+In most systems, reads can heavily number writes 100:1 or even 1000:1.  A read resulting in a complex database join can be very expensive, spending a significant(有效的) amount of time on disk operations.
 
 ##### Disadvantage(s): denormalization
 
@@ -880,16 +880,16 @@ In most systems, reads can heavily number writes 100:1 or even 1000:1.  A read r
 
 SQL tuning is a broad topic and many [books](https://www.amazon.com/s/ref=nb_sb_noss_2?url=search-alias%3Daps&field-keywords=sql+tuning) have been written as reference.
 
-It's important to **benchmark** and **profile** to simulate and uncover bottlenecks.
+It's important to **benchmark** and **profile** to simulate and uncover(发现) bottlenecks.
 
-* **Benchmark** - Simulate high-load situations with tools such as [ab](http://httpd.apache.org/docs/2.2/programs/ab.html).
+* **Benchmark** - Simulate(模仿) high-load situations with tools such as [ab](http://httpd.apache.org/docs/2.2/programs/ab.html).
 * **Profile** - Enable tools such as the [slow query log](http://dev.mysql.com/doc/refman/5.7/en/slow-query-log.html) to help track performance issues.
 
 Benchmarking and profiling might point you to the following optimizations.
 
 ##### Tighten up the schema
 
-* MySQL dumps to disk in contiguous blocks for fast access.
+* MySQL dumps to disk in contiguous(连续的) blocks for fast access.
 * Use `CHAR` instead of `VARCHAR` for fixed-length fields.
     * `CHAR` effectively allows for fast, random access, whereas with `VARCHAR`, you must find the end of a string before moving onto the next one.
 * Use `TEXT` for large blocks of text such as blog posts.  `TEXT` also allows for boolean searches.  Using a `TEXT` field results in storing a pointer on disk that is used to locate the text block.
