@@ -928,11 +928,11 @@ Benchmarking and profiling might point you to the following optimizations.
 
 ### NoSQL
 
-NoSQL is a collection of data items represented in a **key-value store**, **document-store**, **wide column store**, or a **graph database**.  Data is denormalized, and joins are generally done in the application code.  Most NoSQL stores lack true ACID transactions and favor [eventual consistency](#eventual-consistency).
+NoSQL is a collection of data items represented in a **key-value store**, **document-store**, **wide column store**, or a **graph database**.  Data is denormalized(非规范化的), and joins are generally done in the application code.  Most NoSQL stores lack true ACID transactions and favor(证实) [eventual consistency](#eventual-consistency).
 
 **BASE** is often used to describe the properties of NoSQL databases.  In comparison with the [CAP Theorem](#cap-theorem), BASE chooses availability over consistency.
 
-* **Basically available** - the system guarantees availability.
+* **Basically available** - the system guarantees(保证) availability.
 * **Soft state** - the state of the system may change over time, even without input.
 * **Eventual consistency** - the system will become consistent over a period of time, given that the system doesn't receive input during that period.
 
@@ -942,7 +942,7 @@ In addition to choosing between [SQL or NoSQL](#sql-or-nosql), it is helpful to 
 
 > Abstraction: hash table
 
-A key-value store generally allows for O(1) reads and writes and is often backed by memory or SSD.  Data stores can maintain keys in [lexicographic order](https://en.wikipedia.org/wiki/Lexicographical_order), allowing efficient retrieval of key ranges.  Key-value stores can allow for storing of metadata with a value.
+A key-value store generally allows for O(1) reads and writes and is often backed(支持) by memory or SSD.  Data stores can maintain keys in [lexicographic(字典式的) order](https://en.wikipedia.org/wiki/Lexicographical_order), allowing efficient retrieval(取回) of key ranges.  Key-value stores can allow for storing of metadata with a value.
 
 Key-value stores provide high performance and are often used for simple data models or for rapidly-changing data, such as an in-memory cache layer.  Since they offer only a limited set of operations, complexity is shifted to the application layer if additional operations are needed.
 
@@ -959,7 +959,7 @@ A key-value store is the basis for more complex system systems such as a documen
 
 > Abstraction: key-value store with documents stored as values
 
-A document store is centered around documents (XML, JSON, binary, etc), where a document stores all information for a given object.  Document stores provide APIs or a query language to query based on the internal structure of the document itself.  *Note, many key-value stores include features for working with a value's metadata, blurring the lines between these two storage types.*
+A document store is centered around documents (XML, JSON, binary, etc), where a document stores all information for a given object.  Document stores provide APIs or a query language to query based on the internal structure of the document itself.  *Note, many key-value stores include features for working with a value's metadata, blurring(模糊的) the lines between these two storage types.*
 
 Based on the underlying implementation, documents are organized in either collections, tags, metadata, or directories.  Although documents can be organized or grouped together, documents may have fields that are completely different from each other.
 
@@ -1046,7 +1046,7 @@ Reasons for **SQL**:
 
 Reasons for **NoSQL**:
 
-* Semi-structured data
+* Semi-structured(半独立式) data
 * Dynamic or flexible schema
 * Non relational data
 * No need for complex joins
@@ -1068,7 +1068,7 @@ Sample data well-suited for NoSQL:
 * [SQL vs NoSQL differences](https://www.sitepoint.com/sql-vs-nosql-differences/)
 
 ## Cache
-
+<!--READ THERE-->
 <p align="center">
   <img src="http://i.imgur.com/Q6z24La.png">
   <br/>
@@ -1077,11 +1077,11 @@ Sample data well-suited for NoSQL:
 
 Caching improves page load times and can reduce the load on your servers and databases.  In this model, the dispatcher will first lookup if the request has been made before and try to find the previous result to return, in order to save the actual execution.
 
-Databases often benefit from a uniform distribution of reads and writes across its partitions.  Popular items can skew the distribution, causing bottlenecks.  Putting a cache in front of a database can help absorb uneven loads and spikes in traffic.
+Databases often benefit(受益于) from a uniform distribution(均衡分配) of reads and writes across its partitions.  Popular items can skew(偏离) the distribution, causing bottlenecks.  Putting a cache in front of a database can help absorb(吸引) uneven loads and spikes in traffic.
 
 ### Client caching
 
-Caches can be located on the client side (OS or browser), [server side](#reverse-proxy), or in a distinct cache layer.
+Caches can be located on the client side (OS or browser), [server side](#reverse-proxy), or in a distinct(独特的) cache layer.
 
 ### CDN caching
 
@@ -1169,11 +1169,13 @@ Subsequent reads of data added to cache are fast.  Cache-aside is also referred 
 
 ##### Disadvantage(s): cache-aside
 
-* Each cache miss results in three trips, which can cause a noticeable delay.
-* Data can become stale if it is updated in the database.  This issue is mitigated by setting a time-to-live (TTL) which forces an update of the cache entry, or by using write-through.
+* Each cache miss results in three trips, which can cause a noticeable(显儿易见的) delay.
+* Data can become stale if it is updated in the database.  This issue is mitigated(使减轻) by setting a time-to-live (TTL) which forces an update of the cache entry, or by using write-through(直写模式).
 * When a node fails, it is replaced by a new, empty node, increasing latency.
 
 #### Write-through
+
+[直写模式](http://witmax.cn/cache-writing-policies.html)
 
 <p align="center">
   <img src="http://i.imgur.com/0vBc0hN.png">
@@ -1201,7 +1203,7 @@ def set_user(user_id, values):
     cache.set(user_id, user)
 ```
 
-Write-through is a slow overall operation due to the write operation, but subsequent reads of just written data are fast.  Users are generally more tolerant of latency when updating data than reading data.  Data in the cache is not stale.
+Write-through is a slow overall operation due to the write operation, but subsequent(随后的) reads of just written data are fast.  Users are generally more tolerant of latency when updating data than reading data.  Data in the cache is not stale.
 
 ##### Disadvantage(s): write through
 
@@ -1209,6 +1211,8 @@ Write-through is a slow overall operation due to the write operation, but subseq
 * Most data written might never read, which can be minimized with a TTL.
 
 #### Write-behind (write-back)
+
+[回写模式](http://witmax.cn/cache-writing-policies.html)
 
 <p align="center">
   <img src="http://i.imgur.com/rgSrvjG.png">
@@ -1236,7 +1240,7 @@ In write-behind, tha application does the following:
 
 You can configure the cache to automatically refresh any recently accessed cache entry prior to its expiration.
 
-Refresh-ahead can result in reduced latency vs read-through if the cache can accurately predict which items are likely to be needed in the future.
+Refresh-ahead can result in reduced latency vs read-through if the cache can accurately(精确地) predict(预测) which items are likely to be needed in the future.
 
 ##### Disadvantage(s): refresh-ahead
 
@@ -1244,9 +1248,9 @@ Refresh-ahead can result in reduced latency vs read-through if the cache can acc
 
 ### Disadvantage(s): cache
 
-* Need to maintain consistency between caches and the source of truth such as the database through [cache invalidation](https://en.wikipedia.org/wiki/Cache_algorithms).
+* Need to maintain consistency(一致性) between caches and the source of truth such as the database through [cache invalidation](https://en.wikipedia.org/wiki/Cache_algorithms).
 * Need to make application changes such as adding Redis or memcached.
-* Cache invalidation is a difficult problem, there is additional complexity associated with when to update the cache.
+* Cache invalidation(失效) is a difficult problem, there is additional complexity associated with when to update the cache.
 
 ### Source(s) and further reading
 
@@ -1266,7 +1270,7 @@ Refresh-ahead can result in reduced latency vs read-through if the cache can acc
   <i><a href=http://lethain.com/introduction-to-architecting-systems-for-scale/#platform_layer>Source: Intro to architecting systems for scale</a></i>
 </p>
 
-Asynchronous workflows help reduce request times for expensive operations that would otherwise be performed in-line.  They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
+Asynchronous(异步) workflows help reduce request times for expensive operations that would otherwise be performed in-line.  They can also help by doing time-consuming work in advance, such as periodic aggregation of data.
 
 ### Message queues
 
